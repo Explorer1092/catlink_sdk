@@ -57,7 +57,8 @@ class Device:
     @property
     def id(self) -> Optional[str]:
         """Return the device ID."""
-        return self.data.get("id")
+        # Try both 'id' and 'deviceId' for compatibility
+        return self.detail.get("deviceId") or self.data.get("id") or self.data.get("deviceId")
 
     @property
     def mac(self) -> Optional[str]:

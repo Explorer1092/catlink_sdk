@@ -121,3 +121,86 @@ asyncio.run(main())
 - **LITTER_BOX_599** - Litter box model 599
 - **FEEDER** - Smart pet feeder
 - **WATER_FOUNTAIN** - Smart water fountain (future support)
+
+## ✅ SDK 最新更新 (2025-01-28)
+
+### 🎉 新增功能
+
+SDK 现在已经支持之前缺失的所有 36 个参数！包括：
+
+#### 🔦 灯光音效控制
+- `atmosphere_model` - 氛围灯模式
+- `light_color_model` - 灯光颜色模式
+- `light_color` - 当前灯光颜色
+- `indicator_light` - 指示灯状态
+- `panel_tone` - 面板提示音
+- `warning_tone` - 警告音设置
+
+#### ⏰ 定时功能
+- `timing_settings` - 定时清理配置数组
+- `near_enable_timing` - 近场定时启用
+- `all_timing_toggle` - 全部定时开关
+- `timer_times` - 定时清理次数
+- `clear_times` - 清理操作次数
+
+#### 👥 用户管理
+- `master` - 主设备标识
+- `sharers` - 共享用户列表
+
+#### 📱 设备信息
+- `firmware_version` - 固件版本
+- `timezone_id` - 时区ID
+- `gmt` - GMT偏移
+- `real_model` - 真实型号
+- `default_status` - 默认状态
+- `current_message_type` - 当前消息类型
+
+#### 🔧 高级功能
+- `auto_update_pet_weight` - 自动更新宠物体重
+- `pro_model` - Pro型号标识
+- `support_weight_calibration` - 支持重量校准
+- `high_edition` - 高版本标识
+- `toilet_slice_flag` - 厕所切片标志
+- `deodorization_status` - 除臭状态
+- `box_installed` - 垃圾盒安装状态
+- `sand_type` - 猫砂类型
+- `support_box_testing` - 支持垃圾盒测试
+- `error_alert_flag` - 错误提醒标志
+- `quiet_enable` - 静音模式启用
+- `ccare_temp_entrance` - Ccare临时入口
+- `ccare_countdown_timestamp` - Ccare倒计时时间戳
+
+#### 🛍️ 产品信息
+- `show_buy_btn` - 是否显示购买按钮
+- `good_url` - 产品URL
+- `mall_code` - 商城代码
+
+### 🐛 修复的问题
+
+1. ✅ **weight** 参数类型 - 现在正确处理字符串类型（如"充足"）
+2. ✅ **deviceId** 字段兼容性 - 现在同时支持 "id" 和 "deviceId"
+
+### 📝 使用新功能的示例
+
+```python
+# 获取设备的所有新属性
+device = await client.get_device("device_id")
+
+# 灯光控制
+print(f"灯光颜色: {device.light_color}")
+print(f"指示灯状态: {device.indicator_light}")
+
+# 定时功能
+if device.timing_settings:
+    for timing in device.timing_settings:
+        print(f"定时清理: {timing['timingHour']}:{timing['timingMin']}")
+
+# 设备信息
+print(f"固件版本: {device.firmware_version}")
+print(f"是否Pro型号: {device.pro_model}")
+print(f"猫砂类型: {device.sand_type}")
+
+# 用户管理
+if device.sharers:
+    print(f"共享用户数: {len(device.sharers)}")
+```

@@ -1,0 +1,21 @@
+# CatLink 监控配置文件示例
+# 请复制此文件为 config.toml 并修改相应配置
+
+[catlink]
+# CatLink账号信息
+username = "13800138000"  # 手机号
+password = "your_password" # 密码
+
+[dingtalk]
+# 钉钉机器人配置
+# 创建机器人：https://open.dingtalk.com/document/group/custom-robot-access
+webhook = ""
+# 如果机器人开启了加签，填写secret；否则留空或删除此行
+secret = ""
+
+[monitor]
+# 监控配置
+check_interval_minutes = 60        # 检查间隔（分钟）
+reminder_interval_hours = 24       # 重复提醒间隔（小时）
+litter_days_threshold = 0          # 猫砂剩余天数阈值（小于等于此值时提醒）
+deodorant_days_threshold = 0       # 除臭剂剩余天数阈值（小于等于此值时提醒） 

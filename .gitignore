@@ -148,3 +148,5 @@ cython_debug/
 
 # Claude settings
 .claude/settings.local.json
+# Monitor config
+config.toml

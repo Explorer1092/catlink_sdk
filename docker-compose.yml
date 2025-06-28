@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  catlink-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: catlink-monitor
+    restart: unless-stopped
+    volumes:
+      # Mount config file
+      - ./example/config.toml:/app/example/config.toml:ro
+      # Optional: Mount logs directory if needed
+      - ./logs:/app/logs
+    environment:
+      # Python environment
+      - PYTHONUNBUFFERED=1
+      # Optional: Add any environment variables here
+      # - LOG_LEVEL=INFO
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
