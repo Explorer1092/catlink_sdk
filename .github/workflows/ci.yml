@@ -49,7 +49,7 @@ jobs:
 
     - name: Type check with mypy
       run: |
-        poetry run pip install mypy types-aiohttp
+        poetry run pip install mypy
         poetry run mypy catlink_sdk/ --ignore-missing-imports
 
     - name: Test with pytest
