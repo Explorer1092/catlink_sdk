@@ -17,8 +17,6 @@ GitHub Actions can publish directly to PyPI using OpenID Connect (OIDC) without 
    - Workflow name: `publish.yml`
    - Environment name: `pypi`
 
-4. For Test PyPI, repeat the process at [test.pypi.org](https://test.pypi.org) with environment name: `testpypi`
-
 ### Publishing:
 
 - **Automatic**: Create a GitHub release, and it will automatically publish to PyPI
@@ -30,18 +28,17 @@ If you prefer using API tokens:
 
 ### Setup Steps:
 
-1. Generate API tokens:
-   - PyPI: Go to [pypi.org/manage/account/token/](https://pypi.org/manage/account/token/)
-   - Test PyPI: Go to [test.pypi.org/manage/account/token/](https://test.pypi.org/manage/account/token/)
+1. Generate API token:
+   - Go to [pypi.org/manage/account/token/](https://pypi.org/manage/account/token/)
+   - Create a token for the `catlink-sdk` project
 
-2. Add secrets to your GitHub repository:
+2. Add secret to your GitHub repository:
    - Go to Settings → Secrets and variables → Actions
-   - Add new repository secrets:
+   - Add new repository secret:
      - Name: `PYPI_API_TOKEN` → Value: Your PyPI token
-     - Name: `TEST_PYPI_API_TOKEN` → Value: Your Test PyPI token
 
 3. Update `.github/workflows/publish.yml`:
-   - Uncomment the `password:` lines for both PyPI and Test PyPI sections
+   - Uncomment the `password:` line in the PyPI publish step
 
 ## Version Management
 
@@ -93,9 +90,4 @@ poetry config pypi-token.pypi your-pypi-token
 # Build and publish
 poetry build
 poetry publish
-
-# For Test PyPI
-poetry config repositories.test-pypi https://test.pypi.org/legacy/
-poetry config pypi-token.test-pypi your-test-pypi-token
-poetry publish -r test-pypi
 ```
