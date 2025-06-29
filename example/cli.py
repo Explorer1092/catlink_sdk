@@ -12,7 +12,7 @@ import sys
 import json
 import logging
 from getpass import getpass
-from typing import Optional, Dict, Set
+from typing import Optional, Dict, Set, Any
 from datetime import datetime
 from pathlib import Path
 
@@ -52,7 +52,7 @@ class CatLinkMonitor:
         self.config_path = Path(config_path)
         self.config = self._load_config()
         self.client: Optional[CatLinkClient] = None
-        self.last_notified_state: Dict[str, Dict[str, any]] = {}  # 记录上次通知的状态
+        self.last_notified_state: Dict[str, Dict[str, Any]] = {}  # 记录上次通知的状态
         
     def _load_config(self) -> dict:
         """加载配置文件"""

@@ -22,7 +22,6 @@ class ScooperDevice(Device):
     def __init__(self, data: Dict[str, Any], auth: "CatLinkAuth", config: Optional[AdditionalDeviceConfig] = None):
         """Initialize the scooper device."""
         super().__init__(data, auth, config)
-        self.logs: List[Dict[str, Any]] = []
         self._litter_weight_during_day = deque(maxlen=self.config.max_samples_litter)
         self.empty_litter_box_weight = self.config.empty_weight
         self._debug_enabled = False
@@ -30,7 +29,6 @@ class ScooperDevice(Device):
     async def async_init(self) -> None:
         """Initialize the scooper device asynchronously."""
         await super().async_init()
-        # Removed update_logs() call - API endpoint returns 404
 
     def enable_debug(self, enabled: bool = True) -> None:
         """Enable or disable debug mode."""
@@ -280,13 +278,6 @@ class ScooperDevice(Device):
             _LOGGER.error("Failed to get weight: %s", e)
             return None
 
-    @property
-    def last_log(self) -> Optional[str]:
-        """Return the last log entry."""
-        if self.logs:
-            log = self.logs[0]
-            return f"{log.get('time')} {log.get('event')}"
-        return None
 
     # Lighting and Sound Properties
     @property
@@ -560,7 +551,6 @@ class ScooperDevice(Device):
             
             # Sync and error info
             "last_sync": self.last_sync,
-            "last_log": self.last_log,
             "device_error_list": self.device_error_list,
             
             # Debug info
@@ -583,37 +573,12 @@ class ScooperDevice(Device):
             "raw_data": self.data,
             "raw_detail": self.detail,
             "all_attributes": self.get_attributes(),
-            "logs": self.logs[:10] if self.logs else [],
             "weight_history": list(self._litter_weight_during_day),
         }
         
         self._debug_log("Debug info generated", debug_info)
         return debug_info
 
-    async def update_logs(self) -> List[Dict[str, Any]]:
-        """Update device logs - DISABLED: API endpoint returns 404."""
-        # This API endpoint is no longer available, returning empty list
-        return []
-        
-        # Original implementation commented out:
-        # params = {"deviceId": self.id}
-        # 
-        # try:
-        #     response = await self.auth.request("token/catToilet/event/log", params)
-        #     self._debug_log("Logs response", response)
-        #     
-        #     logs = response.get("data", {}).get("scooperLogTop5", [])
-        #     
-        #     if logs:
-        #         self.logs = logs
-        #         self._notify_listeners()
-        #         return logs
-        #     else:
-        #         _LOGGER.warning("No logs in response: %s", response)
-        #         return []
-        # except Exception as e:
-        #     _LOGGER.error("Failed to update logs for %s: %s", self.name, e)
-        #     return []
 
     async def set_mode(self, mode: str) -> bool:
         """Set the scooper mode."""
